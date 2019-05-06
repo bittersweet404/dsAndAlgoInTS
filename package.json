@@ -3,15 +3,18 @@
   "version": "1.0.0",
   "description": "Commonly used Data structures and algorithms written in Javascript (Typescript) ",
   "scripts": {
+    "tsc": "tsc",
     "test": "jest --coverage"
   },
   "author": "Srikar Shastry",
   "dependencies": {
     "jest": "^24.7.1",
-    "typescript": "^3.4.5"
+    "typescript": "^3.4.5",
+    "@babel/core": "^7.4.4",
+    "@babel/types": "^7.4.4",
+    "@babel/parser": "^7.4.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.4",
     "@babel/plugin-transform-typescript": "^7.4.4",
     "@babel/preset-env": "^7.4.4",
     "@babel/preset-typescript": "^7.3.3",
