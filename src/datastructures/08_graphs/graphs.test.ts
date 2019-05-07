@@ -12,13 +12,13 @@ describe('Graph: ', () => {
     });
 
     test('should test toString operation', () => {
-        expect(graph.toString()).toEqual('');
+        expect(graph.toString()).toEqual('{\"items\":{},\"length\":0}');
     });
 
     test('should test addNode operation', () => {
         graph.addNode(1);
         graph.addNode(2);
-        expect(graph.toString()).toContain('1->\n2->');
+        expect(graph.toString()).toContain('{\"items\":{\"1\":[],\"2\":[]},\"length\":2}');
     });
 
     test('should test addEdge operation', () => {
@@ -26,6 +26,19 @@ describe('Graph: ', () => {
         graph.addNode(2);
         graph.addEdge(1,2);
 
-        expect(graph.toString()).toContain('1->2 \n2->1 ');
+        expect(graph.toString()).toContain('{\"items\":{\"1\":[2],\"2\":[]},\"length\":2}');
+    });
+
+    test('should test detectCycles operation', () => {
+        graph.addNode(1);
+        graph.addNode(2);
+        graph.addNode(3);
+
+        graph.addEdge(1,2);
+        graph.addEdge(2,3);
+        expect(graph.detectCycles()).toBeFalsy();
+
+        graph.addEdge(3, 1);
+        expect(graph.detectCycles()).toBeTruthy();
     });
 });

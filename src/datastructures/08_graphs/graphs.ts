@@ -20,28 +20,39 @@
 import Dictionary from '../05_dictionaries/dictionaries';
 
 export default class Graph {
-    private nodes: any[];
-    private adjList: Dictionary;
+    public nodes: any[];
+    public adjList: Dictionary;
 
     constructor() {
         this.nodes = [];
         this.adjList = new Dictionary();
     }
 
+    private detectCyclesUtil(node: any, visited: any, recStack: any): boolean {
+        if (!visited[node]) {
+            visited[node] = true;
+            recStack[node] = true;
+
+            let neighbors: any[] = this.adjList.get(node);
+            for (let i = 0; i < neighbors.length; i++) {
+                let w = neighbors[i];
+                if (!visited[w] && this.detectCyclesUtil(w, visited, recStack)){
+                    return true;
+                }
+                else if (recStack[w]) {
+                    return true;
+                }
+            }
+        }
+        recStack[node] = false;
+        return false;
+    }
+
     /**
      * toString operation - prints out the graph
      */
     public toString(): string {
-        let output: string = '';
-        for (let i = 0; i < this.nodes.length; i++)  {
-            output += `${this.nodes[i]}->`;
-            let neighbors: any = this.adjList.get(this.nodes[i]);
-            for (let j = 0; j < neighbors.length; j++) {
-                output += `${neighbors[j]} `;
-            }
-            output += '\n';
-        }
-        return output;
+        return JSON.stringify(this.adjList);
     }
 
     /**
@@ -57,6 +68,18 @@ export default class Graph {
      */
     public addEdge(node1: any, node2: any) {
         this.adjList.get(node1).push(node2);
-        this.adjList.get(node2).push(node1);
+    }
+
+    public detectCycles(): boolean {
+        let visited: any = {};
+        let recStack: any = {};
+
+        for (let i = 0; i < this.nodes.length; i++) {
+            let u: any = this.nodes[i];
+            if (this.detectCyclesUtil(u, visited, recStack)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
